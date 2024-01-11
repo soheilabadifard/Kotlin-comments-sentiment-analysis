@@ -19,11 +19,39 @@ version = properties("pluginVersion").get()
 // Configure project's dependencies
 repositories {
     mavenCentral()
+    maven {
+        url = uri("https://packages.jetbrains.team/maven/p/grazi/grazie-platform-public")
+    }
+    maven {
+        url = uri("https://packages.jetbrains.team/maven/p/ki/maven")
+    }
+//    maven {
+//        url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+//    }
+    maven {
+        url = uri("https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher")
+    }
+    maven {
+        url = uri("https://mvnrepository.com/artifact/org.mockito/mockito-core")
+    }
 }
 
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
-//    implementation(libs.annotations)
+    implementation("cloud.genesys", "roberta-tokenizer", "1.0.6")
+    implementation("io.kinference", "inference-ort", "0.2.17")
+    implementation("org.slf4j:slf4j-api") {
+        version {
+            strictly("2.0.10")
+        }
+    }
+    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.10.1")
+    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "5.10.1")
+    testImplementation("org.junit.platform:junit-platform-launcher:1.10.1")
+    testImplementation("org.mockito:mockito-core:5.8.0")
+
+
+
 }
 
 // Set the JVM language level used to build the project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
@@ -43,6 +71,7 @@ intellij {
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins = properties("platformPlugins").map { it.split(',').map(String::trim).filter(String::isNotEmpty) }
+    plugins.set(listOf("org.jetbrains.kotlin"))
 }
 
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -128,4 +157,13 @@ tasks {
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
         channels = properties("pluginVersion").map { listOf(it.split('-').getOrElse(1) { "default" }.split('.').first()) }
     }
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events("passed")
+        }
+    }
+}
+tasks.named("classpathIndexCleanup") {
+    dependsOn("compileTestKotlin")
 }
