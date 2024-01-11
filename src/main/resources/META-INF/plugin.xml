@@ -1,18 +1,25 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.soheilabadifard.kotlincommentssentimentanalysis</id>
-    <name>Kotlin-comments-sentiment-analysis Template</name>
+    <name>Kotlin-Comments-Sentiment-Analysis Template</name>
     <vendor>soheilabadifard</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.kotlin</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
+    <actions>
+        <action id="MyPlugin.AccessKotlinFiles" class="com.github.soheilabadifard.kotlincommentssentimentanalysis.AccessKotlinFilesAction" text="Access Kotlin Files" description="Accesses all Kotlin files in the project">
+            <!-- Add to a specific menu or toolbar -->
+            <add-to-group group-id="ToolsMenu" anchor="last" />
+        </action>
+    </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.soheilabadifard.kotlincommentssentimentanalysis.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <postStartupActivity implementation="com.github.soheilabadifard.kotlincommentssentimentanalysis.startup.MyStartupActivity"/>
+        <toolWindow id="Sentiment Analysis Results"
+                    anchor="right"
+                    factoryClass="com.github.soheilabadifard.kotlincommentssentimentanalysis.toolWindow.SentimentAnalysisToolWindowFactory"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.soheilabadifard.kotlincommentssentimentanalysis.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-    </applicationListeners>
 </idea-plugin>
