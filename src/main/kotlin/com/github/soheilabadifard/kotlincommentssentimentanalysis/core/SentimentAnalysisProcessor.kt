@@ -116,7 +116,11 @@ class SentimentAnalysisProcessor(private val project: Project) {
                                             val sentimentList: List<Float> = sentiment[0].toList()
                                             val sent = getSentiment(sentimentList)
                                             println("Comment: $commentText , Sentiment: ${sent.keys}, Probability: ${sent.values}")
-                                            val cntMessage = """ File: $fileName \n Comment: $commentText \n Sentiment: ${sent.keys}, Probability: ${sent.values} \n"""
+                                            val cntMessage = """ File: $fileName
+                                            Comment: $commentText
+                                            Sentiment: ${sent.keys}
+                                            Probability: ${sent.values}
+                                            """
                                             myPanel?.appendText(cntMessage)
                                             sent.forEach { (type, probability) ->
                                                 when (type) {
