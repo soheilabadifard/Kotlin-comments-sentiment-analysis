@@ -34,6 +34,9 @@ repositories {
     maven{
         url = uri("https://mvnrepository.com/artifact/junit/junit")
     }
+    maven{
+        url = uri("https://mvnrepository.com/artifact/org.mockito.kotlin/mockito-kotlin")
+    }
 }
 
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
@@ -65,6 +68,8 @@ dependencies {
             strictly("3.8.2")
         }
     }
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+
 }
 
 // Set the JVM language level used to build the project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
