@@ -1,4 +1,6 @@
-# Kotlin Comments Sentiment Analysis #
+<!-- Plugin description -->
+# Kotlin-comments-sentiment-analysis 
+<!-- Plugin description end -->
 
 ![Build](https://github.com/soheilabadifard/Kotlin-comments-sentiment-analysis/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
@@ -19,9 +21,9 @@
 
 ---
 ## Overview
-<!-- Plugin description -->
+
 This IntelliJ IDEA plugin performs sentiment analysis on comments within Kotlin files using the [RoBERTa](https://github.com/onnx/models/tree/main/validated/text/machine_comprehension/roberta) model. It can be accessed via an Tools menu action with name of **Analyze KT File's Sentiment**, providing statistics per file for the analyzed sentiments.
-<!-- Plugin description end -->
+
 
 ---
 ## Features
