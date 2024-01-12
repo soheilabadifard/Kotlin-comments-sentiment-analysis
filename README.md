@@ -12,6 +12,9 @@
 - [Installation](#installation)
 - [Requirements](#requirements)
 - [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
 
 
 ---
