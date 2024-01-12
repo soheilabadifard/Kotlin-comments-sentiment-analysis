@@ -13,8 +13,10 @@ class MyStartupActivity : StartupActivity, DumbAware {
 
         // download the file from resources to the destination path
         val fileUrlModel = "https://github.com/onnx/models/raw/main/validated/text/machine_comprehension/roberta/model/roberta-sequence-classification-9.onnx"
+
         val destinationPathModel = project.basePath + "/roberta-sequence-classification-9.onnx"
         downloadResourceToFile(fileUrlModel, destinationPathModel)
+
 
         val baseVocabFilePath = "/base_vocabulary.json"
         val baseVocabDestPath = project.basePath + "/base_vocabulary.json"
@@ -55,11 +57,6 @@ class MyStartupActivity : StartupActivity, DumbAware {
             catch (e: Exception) {
                 e.printStackTrace()
             }
-//            val inputStream: InputStream = javaClass.getResourceAsStream(resourcePath)
-//                ?: throw IllegalArgumentException("Resource not found: $resourcePath")
-//            FileOutputStream(destinationFile).use { output ->
-//                inputStream.copyTo(output)
-//            }
         }
         else {
             println("File already exists: $destinationPath")
