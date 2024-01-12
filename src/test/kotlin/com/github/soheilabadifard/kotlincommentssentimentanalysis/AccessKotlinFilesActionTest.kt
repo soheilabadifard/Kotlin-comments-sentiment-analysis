@@ -19,8 +19,8 @@ package com.github.soheilabadifard.kotlincommentssentimentanalysis
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.DataContext
-import com.intellij.openapi.actionSystem.Presentation
-import com.intellij.openapi.project.ProjectManager
+//import com.intellij.openapi.actionSystem.Presentation
+//import com.intellij.openapi.project.ProjectManager
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeEach
