@@ -7,6 +7,8 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.kotlin</depends>
 
+    <idea-version since-build="223.3"/>
+
     <resource-bundle>messages.MyBundle</resource-bundle>
     <actions>
         <action id="MyPlugin.AccessKotlinFiles" class="com.github.soheilabadifard.kotlincommentssentimentanalysis.AccessKotlinFilesAction" text="Access Kotlin Files" description="Accesses all Kotlin files in the project">
