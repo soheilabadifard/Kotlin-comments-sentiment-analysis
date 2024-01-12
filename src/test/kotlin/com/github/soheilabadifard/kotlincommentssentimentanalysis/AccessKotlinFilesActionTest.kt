@@ -1,19 +1,31 @@
 package com.github.soheilabadifard.kotlincommentssentimentanalysis
 
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.ActionManager
-import com.intellij.ide.DataManager
+//import com.intellij.openapi.command.WriteCommandAction
+//import com.intellij.openapi.vfs.LocalFileSystem
+//import com.intellij.openapi.actionSystem.ActionManager
+//import com.intellij.ide.DataManager
+//import com.intellij.openapi.fileTypes.FileTypeManager
+//import com.intellij.openapi.project.Project
+//import com.intellij.openapi.vfs.VirtualFile
+//import com.intellij.psi.PsiFile
+//import com.intellij.psi.PsiFileFactory
+//import com.intellij.psi.PsiManager
+//import com.intellij.testFramework.fixtures.BasePlatformTestCase
+//import com.intellij.testFramework.HeavyPlatformTestCase
+//import org.junit.jupiter.api.BeforeAll
 
-import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.PsiFile
-import com.intellij.psi.PsiManager
+
+
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.DataContext
+import com.intellij.openapi.actionSystem.Presentation
+import com.intellij.openapi.project.ProjectManager
 import org.junit.jupiter.api.AfterEach
-import org.mockito.Mockito
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeEach
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
+import org.junit.jupiter.api.io.TempDir
+
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
@@ -85,43 +97,90 @@ import java.nio.file.StandardCopyOption
 //    }
 //}
 
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+class AccessKotlinFilesActionTest {
 
-class AccessKotlinFilesActionTest : BasePlatformTestCase() {
+    private lateinit var myAction: AccessKotlinFilesAction
+    private lateinit var mockEvent: AnActionEvent
 
-    override fun setUp() {
-        super.setUp()
+    @TempDir
+    lateinit var tempDir: Path
+
+    @BeforeEach
+    fun setUp() {
+
+        setupVirtualFileSystem(tempDir)
+
+        // Assume your tokenizer resources are in 'src/test/resources/tokenizer'
+        val tokenizerResourcePath = Path.of("src/test/testdata/")
+        copyDirectory(tokenizerResourcePath, tempDir)
+
+        // Create a dummy DataContext
+        val dataContext = DataContext { dataId -> null } // Return null for all data IDs
+
+        // Create a dummy Presentation object
+        val presentation = AccessKotlinFilesAction().templatePresentation
+
+        // Use a default project instance (adjust as necessary)
+        //val project = ProjectManager.getInstance().defaultProject
+
+        // Create a mock AnActionEvent
+        mockEvent = AnActionEvent(null, dataContext, "", presentation, ActionManager.getInstance(), 0)
+
         // Additional setup if needed
+        myAction = AccessKotlinFilesAction()
     }
 
-    
-    fun `test AccessKotlinFilesAction`() {
-        // Load a Kotlin file
-        val virtualFile = myFixture.addFileToProject("Test.kt", "fun main() {}").virtualFile
-        myFixture.openFileInEditor(virtualFile)
 
-        // Prepare the data context
-        val dataContext = DataManager.getInstance().getDataContext(myFixture.editor.component)
+//    fun `test AccessKotlinFilesAction`() {
+//        // Load a Kotlin file
+//        val virtualFile = myFixture.addFileToProject("Test.kt", "fun main() {}").virtualFile
+//        myFixture.openFileInEditor(virtualFile)
+//
+//        // Prepare the data context
+//        val dataContext = DataManager.getInstance().getDataContext(myFixture.editor.component)
+//
+//        // Trigger the actionPerformed
+//        val action = AccessKotlinFilesAction()
+//        action.actionPerformed(AnActionEvent(null, dataContext, "", action.templatePresentation, ActionManager.getInstance(), 0))
+//
+//        // Assert expected outcomes
+//        // Assertions go here
+//
+//        // More detailed checks can be performed depending on what actionPerformed does
+//    }
+    @Test
+    fun testActionPerformed (){
+        myAction.actionPerformed(mockEvent)
 
-        // Trigger the actionPerformed
-        val action = AccessKotlinFilesAction()
-        action.actionPerformed(AnActionEvent(null, dataContext, "", action.templatePresentation, ActionManager.getInstance(), 0))
-
-        // Assert expected outcomes
-        // Assertions go here
-
-        // More detailed checks can be performed depending on what actionPerformed does
+    }
+    @AfterEach
+    fun tearDown() {
     }
 
-    override fun tearDown() {
-        try {
-            // Test specific tear down
-        } finally {
-            super.tearDown()
+//    override fun getTestDataPath(): String {
+//        return "/testdata" // Set this to your test data path
+//    }
+    private fun setupVirtualFileSystem(testRootPath: Path) {
+        val kotlinFileContent = """
+                // positive
+                fun main() {
+                    println("Hello, world!")
+                }
+            """.trimIndent()
+
+        // Create and write to a Kotlin file in the temporary directory
+        Files.writeString(testRootPath.resolve("MyTestFile.kt"), kotlinFileContent)
+    }
+    private fun copyDirectory(sourceDirectoryLocation: Path, destinationDirectoryLocation: Path) {
+        Files.walk(sourceDirectoryLocation).forEach { sourcePath ->
+            val destinationPath = destinationDirectoryLocation.resolve(sourceDirectoryLocation.relativize(sourcePath))
+            if (Files.isDirectory(sourcePath)) {
+                if (Files.notExists(destinationPath)) {
+                    Files.createDirectory(destinationPath)
+                }
+            } else {
+                Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING)
+            }
         }
-    }
-
-    override fun getTestDataPath(): String {
-        return "/testdata" // Set this to your test data path
     }
 }
