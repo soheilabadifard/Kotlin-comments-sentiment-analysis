@@ -25,14 +25,14 @@ repositories {
     maven {
         url = uri("https://packages.jetbrains.team/maven/p/ki/maven")
     }
-//    maven {
-//        url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-//    }
     maven {
         url = uri("https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher")
     }
     maven {
         url = uri("https://mvnrepository.com/artifact/org.mockito/mockito-core")
+    }
+    maven{
+        url = uri("https://mvnrepository.com/artifact/junit/junit")
     }
 }
 
@@ -45,13 +45,26 @@ dependencies {
             strictly("2.0.10")
         }
     }
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.10.1")
-    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "5.10.1")
-    testImplementation("org.junit.platform:junit-platform-launcher:1.10.1")
-    testImplementation("org.mockito:mockito-core:5.8.0")
-
-
-
+    testImplementation("org.junit.jupiter", "junit-jupiter-api"){
+        version {
+            strictly("5.10.1")
+        }
+    }
+    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine",){
+        version {
+            strictly("5.10.1")
+        }
+    }
+    testImplementation("org.junit.platform", "junit-platform-launcher"){
+        version {
+            strictly("1.10.1")
+        }
+    }
+    testImplementation("junit", "junit"){
+        version {
+            strictly("3.8.2")
+        }
+    }
 }
 
 // Set the JVM language level used to build the project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
@@ -66,7 +79,8 @@ kotlin {
 // Configure Gradle IntelliJ Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
     pluginName = properties("pluginName")
-    version = properties("platformVersion")
+//    version = properties("platformVersion")
+    version = "2023.3.2"
     type = properties("platformType")
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
@@ -159,9 +173,11 @@ tasks {
     }
     test {
         useJUnitPlatform()
+        useJUnit()
         testLogging {
             events("passed")
         }
+
     }
 }
 tasks.named("classpathIndexCleanup") {
