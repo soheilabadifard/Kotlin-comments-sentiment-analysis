@@ -68,7 +68,7 @@ dependencies {
             strictly("3.8.2")
         }
     }
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
 
 }
 
